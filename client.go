@@ -42,24 +42,6 @@ func createClient(u SSLUser) (lego.Client, error) {
 	log.Println("[INFO] simplecert: client creation complete")
 
 	// -------------------------------------------
-	// DNS Challenge
-	// -------------------------------------------
-
-	if c.DNSProvider != "" {
-		p, err := dns.NewDNSChallengeProviderByName(c.DNSProvider)
-		if err != nil {
-			return *client, fmt.Errorf("simplecert: setting DNS provider specified in config: %s", err)
-		}
-
-		err = client.Challenge.SetDNS01Provider(p)
-		if err != nil {
-			return *client, fmt.Errorf("simplecert: setting DNS challenge provider failed: %s", err)
-		}
-
-		log.Println("[INFO] simplecert: set DNS challenge")
-	}
-
-	// -------------------------------------------
 	// HTTP Challenges
 	// -------------------------------------------
 
@@ -93,8 +75,33 @@ func createClient(u SSLUser) (lego.Client, error) {
 		log.Println("[INFO] simplecert: set TLS challenge")
 	}
 
-	if c.DNSProvider == "" && c.TLSAddress == "" && c.HTTPAddress == "" {
-		return *client, fmt.Errorf("simplecert: you must specify at least one of the challenge types: dns, http or tls")
+	// -------------------------------------------
+	// DNS Challenge
+	// -------------------------------------------
+
+	if c.DNSProvider != "" {
+		p, err := dns.NewDNSChallengeProviderByName(c.DNSProvider)
+		if err != nil {
+			return *client, fmt.Errorf("simplecert: setting DNS provider specified in config: %s", err)
+		}
+
+		err = client.Challenge.SetDNS01Provider(p)
+		if err != nil {
+			return *client, fmt.Errorf("simplecert: setting DNS challenge provider failed: %s", err)
+		}
+
+		log.Println("[INFO] simplecert: set DNS challenge")
+	}
+
+	if c.CustomProvider != nil {
+		err = client.Challenge.SetDNS01Provider(c.CustomProvider)
+		if err != nil {
+			return *client, fmt.Errorf("simplecert: setting DNS challenge provider failed: %s", err)
+		}
+	}
+
+	if c.DNSProvider == "" && c.TLSAddress == "" && c.HTTPAddress == "" && c.CustomProvider == nil {
+		return *client, fmt.Errorf("simplecert: you must specify at least one of the challenge types: dns, http, tls or custom provider")
 	}
 
 	// register if necessary

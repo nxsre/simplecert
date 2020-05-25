@@ -10,6 +10,7 @@ package simplecert
 
 import (
 	"errors"
+	"github.com/go-acme/lego/v3/challenge"
 	"log"
 	"os"
 	"time"
@@ -78,6 +79,8 @@ type Config struct {
 	// see: https://godoc.org/github.com/go-acme/lego/providers/dns
 	DNSProvider string
 
+	CustomProvider challenge.Provider
+
 	// Local runmode
 	Local bool
 
@@ -108,7 +111,7 @@ func CheckConfig(c *Config) error {
 		return errNoDirectoryURL
 	}
 
-	if c.DNSProvider == "" && c.HTTPAddress == "" && c.TLSAddress == "" {
+	if c.DNSProvider == "" && c.HTTPAddress == "" && c.TLSAddress == "" && c.CustomProvider == nil {
 		return errNoChallenge
 	}
 
