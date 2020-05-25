@@ -12,10 +12,12 @@ require (
 	github.com/Azure/go-autorest/autorest/validation v0.2.0 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v0.9.11 // indirect
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.131 // indirect
+	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/cenkalti/backoff/v4 v4.0.2 // indirect
 	github.com/cloudflare/cloudflare-go v0.11.6 // indirect
 	github.com/exoscale/egoscale v1.19.0 // indirect
 	github.com/foomo/tlsconfig v0.0.0-20180418120404-b67861b076c9
+	github.com/go-acme/lego v2.7.2+incompatible
 	github.com/go-acme/lego/v3 v3.7.0
 	github.com/go-errors/errors v1.0.2 // indirect
 	github.com/go-resty/resty/v2 v2.2.0 // indirect
